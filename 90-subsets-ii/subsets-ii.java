@@ -1,23 +1,18 @@
 class Solution {
-    List<List<Integer>> res = new ArrayList<>();
-
     public List<List<Integer>> subsetsWithDup(int[] nums) {
         Arrays.sort(nums);
-        findUniqueSubsets(nums, 0, new ArrayList<>());
+        List<List<Integer>> res = new ArrayList<>();
+        helper(res,new ArrayList<>(),nums,0);
         return res;
     }
-
-    public void findUniqueSubsets(int[] nums, int index, List<Integer> sublist) {
-        if (index == nums.length) {
-           if(!res.contains(sublist)){
-             res.add(new ArrayList<>(sublist));
-           }
-           return;
+    
+    public void helper(List<List<Integer>> res, List<Integer> ls, int[] nums, int pos) {
+        res.add(new ArrayList<>(ls));
+        for(int i=pos;i<nums.length;i++) {
+            if(i>pos&&nums[i]==nums[i-1]) continue;
+            ls.add(nums[i]);
+            helper(res,ls,nums,i+1);     
+            ls.remove(ls.size()-1);
         }
-        sublist.add(nums[index]);
-        findUniqueSubsets(nums, index+1, sublist);
-        sublist.remove(sublist.size() - 1);
-        findUniqueSubsets(nums, index+1, sublist);
-
     }
 }
